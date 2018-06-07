@@ -11,6 +11,17 @@ Basic usage
 my $pg = DB::Pg.new;  # You can pass in connection information if you want.
 ```
 
+```perl6
+# Example of passing in connection information
+# Thanks to https://gist.github.com/jnthn
+my $conninfo = join " ",
+        ('dbname=' ~ (%*ENV<DB_NAME> || die("missing DB_NAME in environemnt"))),
+        ("host=$_" with %*ENV<DB_HOST>),
+        ("user=$_" with %*ENV<DB_USER>),
+        ("password=$_" with %*ENV<DB_PASSWORD>);
+my $db = Database.new(:$conninfo, :converters<DateTime>);
+```
+
 Execute a query, and get a single value:
 ```perl6
 say $pg.query('select 42').value;
